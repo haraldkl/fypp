@@ -19,9 +19,9 @@ you can generate your own binding as ususal::
 
 The preprocessor understands the following uselib attributes:
 
-* ``includes``: Directory/directories to search for include files
+* ``ppincludes``: Directory/directories to search for include files
 * ``modules``: Python module(s) to import before preprocessing starts
-* ``defines``: Definition(s) to apply before preprocessing starts
+* ``ppdefines``: Definition(s) to apply before preprocessing starts
 * ``inifiles``: Python file(s) to execute before preprosessing starts
 
 The example below demonstrates this::
@@ -29,9 +29,9 @@ The example below demonstrates this::
 	def build(bld):
 		bld(features='fypp',
 			source=['trash.fypp'],
-			includes='include',
+			ppincludes='include',
 			modules=['myfypp1', 'myfypp2'],
-			defines='TEST=1 QUIET',
+			ppdefines='TEST=1 QUIET',
 			inifiles='fyppini.py')
 '''
 
