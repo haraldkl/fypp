@@ -44,7 +44,7 @@ except ImportError:
 	fypp = None
 
 
-Tools.ccroot.USELIB_VARS['fypp'] = set([ 'DEFINES', 'INCLUDES', 'MODULES',
+Tools.ccroot.USELIB_VARS['fypp'] = set([ 'PPDEFINES', 'PPINCLUDES', 'MODULES',
                                          'INIFILES' ])
 
 FYPP_INCPATH_ST = '-I%s'
@@ -104,8 +104,8 @@ class fypp_preprocessor(Task.Task):
                 argparser = fypp.get_option_parser()
                 args = [FYPP_LINENUM_FLAG]
                 args += self.env.FYPP_FLAGS
-		args += [FYPP_DEFINES_ST % ss for ss in self.env['DEFINES']]
-		args += [FYPP_INCPATH_ST % ss for ss in self.env['INCLUDES']]
+		args += [FYPP_DEFINES_ST % ss for ss in self.env['PPDEFINES']]
+		args += [FYPP_INCPATH_ST % ss for ss in self.env['PPINCLUDES']]
                 args += [FYPP_INIFILES_ST % ss for ss in self.env['INIFILES']]
                 args += [FYPP_MODULES_ST % ss for ss in self.env['MODULES']]
                 opts = argparser.parse_args(args, namespace=opts)
@@ -134,7 +134,6 @@ class fypp_preprocessor(Task.Task):
 
 
 TaskGen.feature('fypp')(Tools.ccroot.propagate_uselib_vars)
-TaskGen.feature('fypp')(Tools.ccroot.apply_incpaths)
 
 
 
