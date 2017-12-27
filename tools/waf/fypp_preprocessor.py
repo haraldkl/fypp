@@ -95,6 +95,7 @@ def fypp_check(conf):
 ################################################################################
 
 class fypp_preprocessor(Task.Task):
+	color = 'BLUE'
 	
         def keyword(self):
                 return 'Preprocessing'
