@@ -19,9 +19,9 @@ you can generate your own binding as ususal::
 
 The preprocessor understands the following uselib attributes:
 
-* ``includes``: Directory/directories to search for include files
+* ``ppincludes``: Directory/directories to search for include files
 * ``modules``: Python module(s) to import before preprocessing starts
-* ``defines``: Definition(s) to apply before preprocessing starts
+* ``ppdefines``: Definition(s) to apply before preprocessing starts
 * ``inifiles``: Python file(s) to execute before preprosessing starts
 
 The example below demonstrates this::
@@ -29,9 +29,9 @@ The example below demonstrates this::
 	def build(bld):
 		bld(features='fypp',
 			source=['trash.fypp'],
-			includes='include',
+			ppincludes='include',
 			modules=['myfypp1', 'myfypp2'],
-			defines='TEST=1 QUIET',
+			ppdefines='TEST=1 QUIET',
 			inifiles='fyppini.py')
 '''
 
@@ -44,7 +44,7 @@ except ImportError:
 	fypp = None
 
 
-Tools.ccroot.USELIB_VARS['fypp'] = set([ 'DEFINES', 'INCLUDES', 'MODULES',
+Tools.ccroot.USELIB_VARS['fypp'] = set([ 'PPDEFINES', 'PPINCLUDES', 'MODULES',
                                          'INIFILES' ])
 
 FYPP_INCPATH_ST = '-I%s'
@@ -104,8 +104,8 @@ class fypp_preprocessor(Task.Task):
                 argparser = fypp.get_option_parser()
                 args = [FYPP_LINENUM_FLAG]
                 args += self.env.FYPP_FLAGS
-		args += [FYPP_DEFINES_ST % ss for ss in self.env['DEFINES']]
-		args += [FYPP_INCPATH_ST % ss for ss in self.env['INCLUDES']]
+		args += [FYPP_DEFINES_ST % ss for ss in self.env['PPDEFINES']]
+		args += [FYPP_INCPATH_ST % ss for ss in self.env['PPINCLUDES']]
                 args += [FYPP_INIFILES_ST % ss for ss in self.env['INIFILES']]
                 args += [FYPP_MODULES_ST % ss for ss in self.env['MODULES']]
                 opts, leftover = argparser.parse_args(args)
@@ -134,7 +134,6 @@ class fypp_preprocessor(Task.Task):
 
 
 TaskGen.feature('fypp')(Tools.ccroot.propagate_uselib_vars)
-TaskGen.feature('fypp')(Tools.ccroot.apply_incpaths)
 
 
 
